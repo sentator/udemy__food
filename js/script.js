@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Timer
 
-    const deadline = '2022-02-20';
+    const deadline = '2022-05-07T11:34:00.000';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -100,3 +100,96 @@ document.addEventListener('DOMContentLoaded', () => {
     setClock('.timer', deadline);
 
 });
+
+// Modal
+
+const modal = document.querySelector('.modal'),
+    callButtons = document.querySelectorAll('[data-modal]');
+
+let modalTimerId = setTimeout(() => {
+    showModal(modal);
+}, 60000);
+
+
+function showModal(modalElement) {
+    modalElement.classList.remove('hide');
+    modalElement.classList.add('show');
+    document.body.style.cssText = `overflow: hidden; padding-right: ${calcScrollWidth()}`;
+    clearInterval(modalTimerId);
+}
+
+function hideModal(modalElement) {
+    modalElement.classList.remove('show');
+    modalElement.classList.add('hide');
+    document.body.style.cssText = `overflow: visible; padding-right: 0px`;
+}
+
+function calcScrollWidth() {
+    let div = document.createElement('div');
+
+    div.style.width ='50px';
+    div.style.height ='50px';
+    div.style.overflow = 'scroll';
+    div.style.opacity = 0;
+    div.style.visible = 'hidden';
+
+    document.body.append(div);
+
+    let scrollWidth = `${div.offsetWidth - div.clientWidth}px`;
+
+    div.remove();
+
+    return scrollWidth;
+}
+
+callButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        showModal(modal);
+    });
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.code == "Escape" && modal.classList.contains('show')) {
+        hideModal(modal);
+    }
+});
+
+modal.addEventListener('click', (e) => {
+    let target = e.target;
+
+    if (target && target.matches('.modal__close') || target && target === modal) {
+        hideModal(modal);
+    }
+});
+
+function showModalByScroll() {
+    if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
+        showModal(modal);
+        window.removeEventListener('scroll', showModalByScroll);
+    }
+}
+
+window.addEventListener('scroll', showModalByScroll);
+
+// Navigation to top
+const pepper = document.querySelector('.pepper > img');
+
+pepper.addEventListener('click', () => {
+    animationInit(40, 1);
+});
+
+// Animation for navigation
+function animationInit(stepQuantity, intervalPeriod) {
+    const destination = 0;
+    let currentPositionY = document.documentElement.scrollTop;
+    
+    let animatedId = setTimeout(function animatedScroll() {
+        if (destination <= currentPositionY) {
+            window.scrollTo(0, currentPositionY);
+            currentPositionY -= stepQuantity;
+            animatedId = setTimeout(animatedScroll, intervalPeriod);
+        } else {
+            clearInterval(animatedId);
+        }
+    }, intervalPeriod);
+}
