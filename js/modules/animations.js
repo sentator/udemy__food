@@ -23,4 +23,4 @@ function animations() {
     }
 }
 
-module.exports = animations;
+export default animations;
