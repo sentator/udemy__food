@@ -238,7 +238,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "showModal": () => (/* binding */ showModal)
 /* harmony export */ });
 let modalTimerId = setTimeout(() => {
-    showModal(modal);
+    showModal('.modal');
 }, 60000);
 
 function showModal(modalSelector) {
@@ -302,7 +302,7 @@ function modal(triggerSelector, modalSelector) {
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
-            showModal(modal);
+            showModal(".modal");
             window.removeEventListener('scroll', showModalByScroll);
         }
     }
@@ -419,6 +419,7 @@ function slider() {
     function changeActiveDot(activeDotNumber) {
         document.querySelectorAll('.dot').forEach(item => item.classList.remove('active'));
         document.querySelectorAll('.dot')[activeDotNumber].classList.add('active');
+        slideIndex = activeDotNumber + 1;
     }
 
     document.querySelector('.carousel-indicators').addEventListener('click', (e) => {
@@ -430,12 +431,12 @@ function slider() {
 
             offset = +slideWidth.slice(0, (slideWidth.length - 2)) * (activeSlideIndex - 1);
             sliderInner.style.transform = `translateX(-${offset}px)`;
-        }
 
-        if (slides.length < 10) {
-            slideNumCurrent.textContent = `0${activeSlideIndex}`;
-        } else {
-            slideNumCurrent.textContent = activeSlideIndex;
+            if (slides.length < 10) {
+                slideNumCurrent.textContent = `0${activeSlideIndex}`;
+            } else {
+                slideNumCurrent.textContent = activeSlideIndex;
+            }
         }
     });
 }

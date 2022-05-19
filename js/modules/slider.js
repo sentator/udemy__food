@@ -92,6 +92,7 @@ function slider() {
     function changeActiveDot(activeDotNumber) {
         document.querySelectorAll('.dot').forEach(item => item.classList.remove('active'));
         document.querySelectorAll('.dot')[activeDotNumber].classList.add('active');
+        slideIndex = activeDotNumber + 1;
     }
 
     document.querySelector('.carousel-indicators').addEventListener('click', (e) => {
@@ -103,12 +104,12 @@ function slider() {
 
             offset = +slideWidth.slice(0, (slideWidth.length - 2)) * (activeSlideIndex - 1);
             sliderInner.style.transform = `translateX(-${offset}px)`;
-        }
 
-        if (slides.length < 10) {
-            slideNumCurrent.textContent = `0${activeSlideIndex}`;
-        } else {
-            slideNumCurrent.textContent = activeSlideIndex;
+            if (slides.length < 10) {
+                slideNumCurrent.textContent = `0${activeSlideIndex}`;
+            } else {
+                slideNumCurrent.textContent = activeSlideIndex;
+            }
         }
     });
 }
